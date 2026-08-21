@@ -11,7 +11,7 @@ const app = express();
 // ── إعدادات ديسكورد والمسؤولين ──────────────────────────────────────────
 const DISCORD_CLIENT_ID = '1270290369359384600';
 const DISCORD_CLIENT_SECRET = 'alqaq47MY2ge50dJ2YOp6wevAak0y1av';
-const DISCORD_CALLBACK_URL = 'http://uk-02.rrhosting.eu:7622/auth/discord/callback';
+const DISCORD_CALLBACK_URL = 'https://id-1f0p.onrender.com/auth/discord/callback';
 
 // قائمة كبار المسؤولين (أصحاب الصلاحيات الكاملة)
 const SUPER_ADMIN_IDS = ['1003511814140743825', '1413132272772845579']; 
