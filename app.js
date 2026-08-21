@@ -1246,7 +1246,8 @@ app.use(async (req, res) => {
 </html>`);
 });
 
-const PORT = 7622;
-app.listen(PORT, () => {
-    console.log(`🚀 Server running on de-01.rrhosting.eu:${PORT}`);
+const PORT = process.env.PORT || 7622;
+
+app.listen(PORT, "0.0.0.0", () => {
+    console.log(`🚀 Server running on port ${PORT}`);
 });
