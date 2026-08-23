@@ -351,7 +351,7 @@ app.put("/api/bank/my-requests/:id/:action", async (req, res) => {
                 discordId: req.user.id,
                 discordTag: req.user.username,
                 action: "bank_approved",
-                site: "بنك نورف",
+                site: "بنك وزارة الداخلية",
                 accountNumber
             });
 
@@ -363,7 +363,7 @@ app.put("/api/bank/my-requests/:id/:action", async (req, res) => {
                 discordId: req.user.id,
                 discordTag: req.user.username,
                 action: "bank_rejected",
-                site: "بنك نورف",
+                site: "بنك وزارة الداخلية",
                 accountNumber: null
             });
 
@@ -585,7 +585,7 @@ app.use(async (req, res) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الأحوال المدنية — NORV</title>
+    <title>الأحوال المدنية — MOI</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -607,7 +607,7 @@ app.use(async (req, res) => {
         .btn-full { width: 100%; padding: 0.75rem; margin-top: 0.5rem; }
         
         .id-card { background: linear-gradient(135deg, rgba(45,27,78,0.8), rgba(15,5,30,0.9)); border: 2px solid #a855f7; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.4); position: relative; overflow: hidden; }
-        .id-card::before { content: 'NORV ID'; position: absolute; left: -10px; bottom: -10px; font-size: 4rem; font-weight: 900; color: rgba(255,255,255,0.03); z-index: 0; pointer-events: none; }
+        .id-card::before { content: 'MOI ID'; position: absolute; left: -10px; bottom: -10px; font-size: 4rem; font-weight: 900; color: rgba(255,255,255,0.03); z-index: 0; pointer-events: none; }
         .id-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(168,85,247,0.4); padding-bottom: 8px; margin-bottom: 12px; }
         .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; font-size: 0.95rem; position: relative; z-index: 1; }
         .id-item { background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(168,85,247,0.1); }
@@ -702,7 +702,7 @@ app.use(async (req, res) => {
         })();
     </script>
     <nav>
-        <div class="logo">NORV</div>
+        <div class="logo">MOI</div>
         <ul class="nav-links">
             <li><button onclick="goPage('home')" id="nav-home" class="active">الرئيسية</button></li>
             <li><button onclick="goPage('ids')" id="nav-ids">هوياتي</button></li>
@@ -717,11 +717,11 @@ app.use(async (req, res) => {
     <div id="page-home" class="page active">
         <div style="text-align:center; margin-bottom:2rem;">
             <h1 style="font-size:3rem; text-shadow: 0 0 15px #a855f7;">الأحوال المدنية</h1>
-            <p>نظام مدينة NORV الرسمي لاستخراج وإدارة الهويات الذكية</p>
+            <p>النظام الرسمي لوزارة الداخلية لاستخراج وإدارة الهويات الذكية</p>
         </div>
         <div class="card">
             <h2>📋 التعليمات والشروط الهامة</h2>
-            <p style="margin-top:8px;">1. يجب أن يكون الاسم واقعي ومطابق لشروط سيرفر NORV.</p>
+            <p style="margin-top:8px;">1. يجب أن يكون الاسم واقعي ومطابق لشروط سيرفر وزارة الداخلية (MOI).</p>
             <p style="margin-top:8px;">2. يمنع منعاً باتاً انتحال شخصيات المشاهير أو الإداريين.</p>
             <p style="margin-top:8px; color: #c084fc; font-weight: bold;">3. يسمح بتقديم واستخراج (هويتين فقط 2) بحد أقصى لكل مواطن.</p>
             <p style="margin-top:8px;">4. عند الموافقة، ستحصل هويتك تلقائياً على رقم وطني فريد (11 رقم) واختصار فريد (5 أرقام).</p>
@@ -763,8 +763,8 @@ app.use(async (req, res) => {
 
     <!-- صفحة طلبات البنك -->
     <div id="page-bank" class="page">
-        <h1>🏦 طلبات فتح حساب — بنك نورف</h1>
-        <p style="color:#b09ed4; margin-bottom:1.5rem;">هنا تظهر طلبات فتح الحساب البنكي الواردة من بنك نورف. اقبل أو ارفض الطلب بنفسك.</p>
+        <h1>🏦 طلبات فتح حساب — بنك وزارة الداخلية</h1>
+        <p style="color:#b09ed4; margin-bottom:1.5rem;">هنا تظهر طلبات فتح الحساب البنكي الواردة من بنك وزارة الداخلية. اقبل أو ارفض الطلب بنفسك.</p>
         <div id="bank-requests-container">جاري التحميل...</div>
     </div>
 
@@ -792,7 +792,7 @@ app.use(async (req, res) => {
 
             <!-- قسم طلبات البنك للموظفين -->
             <div id="admin-bank-section" style="display:none;">
-                <h3>🏦 طلبات فتح حساب بنك نورف المعلقة</h3>
+                <h3>🏦 طلبات فتح حساب بنك وزارة الداخلية المعلقة</h3>
                 <p style="color:#b09ed4; font-size:0.85rem; margin: 8px 0 16px;">الطلبات اللي لم يرد عليها المستخدم بعد — تقدر تقبل أو ترفض بدلاً عنه.</p>
                 <div id="admin-bank-data">جاري التحميل...</div>
             </div>
@@ -804,7 +804,7 @@ app.use(async (req, res) => {
 
             <!-- قسم لوق القبول الجديد -->
             <div id="admin-log-section" style="display:none;">
-                <h3>📋 لوق قبول حسابات بنك نورف</h3>
+                <h3>📋 لوق قبول حسابات بنك وزارة الداخلية</h3>
                 <p style="color:#b09ed4; font-size:0.85rem; margin: 8px 0 16px;">سجل كامل بكل عمليات القبول والرفض لطلبات فتح الحسابات البنكية.</p>
                 <div id="admin-log-data">جاري التحميل...</div>
             </div>
@@ -923,7 +923,7 @@ app.use(async (req, res) => {
             container.innerHTML = data.map(id => \`
                 <div class="id-card">
                     <div class="id-header">
-                        <span style="font-weight:900; font-size:1.1rem; color:#c084fc;">ID CARD — NORV</span>
+                        <span style="font-weight:900; font-size:1.1rem; color:#c084fc;">ID CARD — MOI</span>
                         <span class="status-badge \${id.status === 'approved' ? 'status-approved' : (id.status === 'rejected' ? 'status-rejected' : 'status-pending')}">
                             \${id.status === 'approved' ? 'مقبولة ورسمية ✅' : (id.status === 'rejected' ? 'مرفوضة ❌' : 'قيد الانتظار ⏳')}
                         </span>
@@ -951,14 +951,14 @@ app.use(async (req, res) => {
             const data = await r.json();
             
             if(data.length === 0) {
-                container.innerHTML = '<div class="card" style="text-align:center; color:#b09ed4;">لا توجد طلبات فتح حساب بنكي واردة حالياً.<br><small style="color:#6b5a8a;">عندما تسجل في بنك نورف ستظهر الطلبات هنا.</small></div>';
+                container.innerHTML = '<div class="card" style="text-align:center; color:#b09ed4;">لا توجد طلبات فتح حساب بنكي واردة حالياً.<br><small style="color:#6b5a8a;">عندما تسجل في بنك وزارة الداخلية ستظهر الطلبات هنا.</small></div>';
                 return;
             }
 
             container.innerHTML = data.map(req => \`
                 <div class="bank-req-card \${req.status}">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-                        <span style="font-weight:bold; color:#93c5fd;">🏦 طلب من بنك نورف</span>
+                        <span style="font-weight:bold; color:#93c5fd;">🏦 طلب من بنك وزارة الداخلية</span>
                         <span class="status-badge \${req.status === 'approved' ? 'status-approved' : req.status === 'rejected' ? 'status-rejected' : 'status-pending'}">
                             \${req.status === 'approved' ? 'مقبول ✅' : req.status === 'rejected' ? 'مرفوض ❌' : 'في الانتظار ⏳'}
                         </span>
@@ -974,7 +974,7 @@ app.use(async (req, res) => {
                     \` : ''}
                     \${req.status === 'pending' ? \`
                         <div style="background:rgba(234,179,8,0.1); border:1px solid #eab308; border-radius:8px; padding:10px; margin-bottom:12px;">
-                            <p style="color:#fde047; font-size:0.9rem;">📨 طلب من بنك نورف لفتح حساب باستخدام هويتك. هل توافق؟</p>
+                            <p style="color:#fde047; font-size:0.9rem;">📨 طلب من بنك وزارة الداخلية لفتح حساب باستخدام هويتك. هل توافق؟</p>
                         </div>
                         <div style="display:flex; gap:10px;">
                             <button class="btn" style="background:#22c55e; flex:1;" onclick="actionBankReq('\${req._id}', 'approve')">✅ قبول وفتح الحساب</button>
@@ -1263,7 +1263,7 @@ app.use(async (req, res) => {
         checkAuth();
     </script>
 <footer style="text-align: center; padding: 1.5rem; margin-top: 2rem; border-top: 1px solid rgba(160,100,255,0.2); background: rgba(15,5,30,0.6); color: #b09ed4; font-size: 0.9rem;">
-    <p>جميع الحقوق محفوظة © 2026 | <span style="color: #c084fc; font-weight: bold;">نورف</span></p>
+    <p>جميع الحقوق محفوظة © 2026 | <span style="color: #c084fc; font-weight: bold;">MOI - وزارة الداخلية</span></p>
 </footer>
 </body>
 </html>`);
