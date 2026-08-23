@@ -566,9 +566,12 @@ app.use(async (req, res) => {
             <style>
                 body { background: #1a0a2e; color: #fca5a5; font-family: 'Tajawal', sans-serif; text-align: center; padding-top: 20vh; }
                 .box { border: 2px solid #ef4444; background: rgba(239,68,68,0.1); padding: 30px; display:inline-block; border-radius:15px; }
+                .disclaimer-bar { position: fixed; top: 0; left: 0; width: 100%; z-index: 999999; background: #dc2626; color: #fff; text-align: center; font-weight: 900; font-size: 0.85rem; padding: 10px 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); font-family: 'Tajawal', sans-serif; }
+                @media (max-width: 640px) { .disclaimer-bar { font-size: 0.72rem; padding: 8px 6px; } }
             </style>
         </head>
         <body>
+            <div class="disclaimer-bar">⚠️ تنبيه: هذا الموقع مخصص للمحاكاة واللعب فقط، ولا يمت للواقع بصلة.</div>
             <div class="box">
                 <h1>⚙️ الموقع تحت الصيانة حالياً</h1>
                 <p style="color: #e8d5ff; margin-top:10px;">نعمل الآن على تحديث الأنظمة وتطوير الأحوال المدنية، يرجى العودة لاحقاً.</p>
@@ -675,9 +678,29 @@ app.use(async (req, res) => {
         .log-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(168,85,247,0.2); border-radius: 8px; padding: 10px 15px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; }
         .log-bank-approved { border-color: #22c55e; }
         .log-bank-rejected { border-color: #ef4444; }
+
+        /* شريط التحذير الثابت أعلى الموقع */
+        .disclaimer-bar { position: fixed; top: 0; left: 0; width: 100%; z-index: 999999; background: #dc2626; color: #fff; text-align: center; font-weight: 900; font-size: 0.85rem; padding: 10px 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        @media (max-width: 640px) { .disclaimer-bar { font-size: 0.72rem; padding: 8px 6px; } }
     </style>
 </head>
 <body>
+    <div class="disclaimer-bar" id="norvDisclaimerBar">⚠️ تنبيه: هذا الموقع مخصص للمحاكاة واللعب فقط، ولا يمت للواقع بصلة.</div>
+    <script>
+        (function() {
+            function adjustForDisclaimer() {
+                var bar = document.getElementById('norvDisclaimerBar');
+                var nav = document.querySelector('nav');
+                if (!bar) return;
+                var h = bar.offsetHeight;
+                document.body.style.paddingTop = h + 'px';
+                if (nav) nav.style.top = h + 'px';
+            }
+            window.addEventListener('DOMContentLoaded', adjustForDisclaimer);
+            window.addEventListener('load', adjustForDisclaimer);
+            window.addEventListener('resize', adjustForDisclaimer);
+        })();
+    </script>
     <nav>
         <div class="logo">NORV</div>
         <ul class="nav-links">
