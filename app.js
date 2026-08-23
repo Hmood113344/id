@@ -62,7 +62,7 @@ const BankRequestSchema = new mongoose.Schema({
 });
 const BankRequest = mongoose.model("BankRequest", BankRequestSchema);
 
-// ── موديل لوق القبول (سجل الأحداث للسوبر أدمين) ───────────────────────
+// ── موديل اللوق الشامل (سجل كل أحداث الموقع للسوبر أدمين) ───────────────────────
 const ApprovalLogSchema = new mongoose.Schema({
     discordId: String,       // آيدي المستخدم المتأثر بالحدث (صاحب الطلب مثلاً)
     discordTag: String,
@@ -544,7 +544,7 @@ app.post("/api/superadmin/staff/remove", isSuperAdmin, async (req, res) => {
     } catch (e) { res.json({ success: false, msg: "خطأ في النظام" }); }
 });
 
-// جلب لوق القبول لكبار المسؤولين
+// جلب اللوق الشامل لكبار المسؤولين
 app.get("/api/superadmin/approval-log", isSuperAdmin, async (req, res) => {
     try {
         const logs = await ApprovalLog.find().sort({ createdAt: -1 }).limit(100);
@@ -844,7 +844,7 @@ app.use(async (req, res) => {
                 <button id="tab-req" class="tab-btn active" onclick="switchMainTab('requests')">📥 طلبات الهوية</button>
                 <button id="tab-bank" class="tab-btn" style="border-color:#3b82f6;" onclick="switchMainTab('bank')">🏦 طلبات البنك</button>
                 <button id="tab-arch" class="tab-btn" onclick="switchMainTab('archive')">🗄️ الأرشيف والمخفية</button>
-                <button id="tab-log" class="tab-btn" style="display:none; border-color:#3b82f6;" onclick="switchMainTab('log')">📋 لوق القبول</button>
+                <button id="tab-log" class="tab-btn" style="display:none; border-color:#3b82f6;" onclick="switchMainTab('log')">📋 اللوق الشامل</button>
                 <button id="tab-ctrl" class="tab-btn" style="display:none; border-color:#ef4444;" onclick="switchMainTab('controls')">👑 تحكم كبار المسؤولين</button>
             </div>
 
@@ -865,10 +865,10 @@ app.use(async (req, res) => {
                 <div id="admin-archive-data">جاري تحميل الأرشيف...</div>
             </div>
 
-            <!-- قسم لوق القبول الجديد -->
+            <!-- قسم اللوق الشامل -->
             <div id="admin-log-section" style="display:none;">
-                <h3>📋 لوق قبول حسابات بنك وزارة الداخلية</h3>
-                <p style="color:#b09ed4; font-size:0.85rem; margin: 8px 0 16px;">سجل كامل بكل عمليات القبول والرفض لطلبات فتح الحسابات البنكية.</p>
+                <h3>📋 لوق الموقع الشامل</h3>
+                <p style="color:#b09ed4; font-size:0.85rem; margin: 8px 0 16px;">سجل كامل بكل حدث يصير في الموقع: تقديم/قبول/رفض/أرشفة الهويات، طلبات البنك، تعيين وطرد المسؤولين، وتعديل الإعدادات.</p>
                 <div id="admin-log-data">جاري التحميل...</div>
             </div>
 
