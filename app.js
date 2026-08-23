@@ -64,14 +64,24 @@ const BankRequest = mongoose.model("BankRequest", BankRequestSchema);
 
 // ── موديل لوق القبول (سجل الأحداث للسوبر أدمين) ───────────────────────
 const ApprovalLogSchema = new mongoose.Schema({
-    discordId: String,
+    discordId: String,       // آيدي المستخدم المتأثر بالحدث (صاحب الطلب مثلاً)
     discordTag: String,
-    action: String,      // bank_approved / bank_rejected
-    site: String,        // اسم الموقع اللي جاء منه الطلب
+    actorId: { type: String, default: null },   // آيدي اللي سوى الإجراء (أدمن/سوبر أدمين)
+    actorTag: { type: String, default: null },
+    action: String,       // نوع الحدث: id_submitted / id_approved / id_rejected / id_hidden / id_unarchived / bank_request_submitted / bank_approved / bank_rejected / staff_added / staff_removed / settings_toggled
+    site: String,         // اسم الموقع/القسم اللي صار فيه الحدث
     accountNumber: String,
+    details: { type: String, default: '' },   // وصف إضافي عن الحدث
     createdAt: { type: Date, default: Date.now }
 });
 const ApprovalLog = mongoose.model("ApprovalLog", ApprovalLogSchema);
+
+// دالة عامة لتسجيل أي حدث يصير في الموقع داخل اللوق
+async function logEvent({ action, discordId = null, discordTag = null, actorId = null, actorTag = null, site = "وزارة الداخلية", accountNumber = null, details = '' }) {
+    try {
+        await ApprovalLog.create({ action, discordId, discordTag, actorId, actorTag, site, accountNumber, details });
+    } catch (e) { console.log("⚠️ فشل تسجيل الحدث باللوق:", e.message); }
+}
 
 // دالة لتجهيز الإعدادات الافتراضية
 async function initSettings() {
@@ -245,6 +255,11 @@ app.post("/api/ids", checkMaintenance, async (req, res) => {
             discord: discordId,
             discordTag: req.user.username 
         });
+        await logEvent({
+            action: "id_submitted",
+            discordId, discordTag: req.user.username,
+            details: `تقديم طلب هوية جديد باسم: ${name}`
+        });
         res.json({ success: true, id });
     } catch (e) { res.json({ success: false, msg: e.message }); }
 });
@@ -297,6 +312,13 @@ app.post("/api/bank/verify-id", async (req, res) => {
             discord: discordId,
             discordTag: discordTag || "غير معروف",
             idNumber: idInput
+        });
+
+        await logEvent({
+            action: "bank_request_submitted",
+            discordId, discordTag: discordTag || "غير معروف",
+            site: "بنك وزارة الداخلية",
+            details: `طلب فتح حساب برقم هوية: ${idInput}`
         });
 
         res.json({ success: true, msg: "تم إرسال طلب فتح الحساب، انتظر القبول في موقع الأحوال المدنية" });
@@ -412,6 +434,23 @@ app.put("/api/admin/ids/:id/:action", isStaff, async (req, res) => {
             update.shortId = uniqueIds.shortId;
         }
         await Id.findByIdAndUpdate(id, update);
+
+        const actionLabels = {
+            approve: "id_approved",
+            reject: "id_rejected",
+            hide: "id_hidden",
+            unarchive: "id_unarchived"
+        };
+        if (targetId && actionLabels[action]) {
+            await logEvent({
+                action: actionLabels[action],
+                discordId: targetId.discord, discordTag: targetId.discordTag,
+                actorId: req.user.id, actorTag: req.user.username,
+                site: "لوحة إدارة الأحوال المدنية",
+                details: action === 'approve' ? `تم اعتماد الهوية (${update.idNumber || targetId.idNumber})` : `الاسم: ${targetId.name}`
+            });
+        }
+
         res.json({ success: true });
     } catch (e) { res.json({ success: false }); }
 });
@@ -464,6 +503,12 @@ app.post("/api/superadmin/settings/toggle", isSuperAdmin, async (req, res) => {
     const { isMaintenance, isApplyLocked, isIdsPageLocked } = req.body;
     try {
         await Settings.updateOne({}, { isMaintenance, isApplyLocked, isIdsPageLocked });
+        await logEvent({
+            action: "settings_toggled",
+            actorId: req.user.id, actorTag: req.user.username,
+            site: "إعدادات السوبر أدمين",
+            details: `صيانة: ${isMaintenance ? "مفعلة" : "متوقفة"} | قفل التقديم: ${isApplyLocked ? "مفعل" : "متوقف"} | قفل صفحة الهويات: ${isIdsPageLocked ? "مفعل" : "متوقف"}`
+        });
         res.json({ success: true });
     } catch (e) { res.json({ success: false }); }
 });
@@ -473,6 +518,13 @@ app.post("/api/superadmin/staff/add", isSuperAdmin, async (req, res) => {
     if (!discordId) return res.json({ success: false, msg: "يرجى إدخال الآيدي" });
     try {
         await Settings.updateOne({}, { $addToSet: { staffList: discordId } });
+        await logEvent({
+            action: "staff_added",
+            discordId,
+            actorId: req.user.id, actorTag: req.user.username,
+            site: "إعدادات السوبر أدمين",
+            details: `تم تعيين الآيدي ${discordId} كمسؤول`
+        });
         res.json({ success: true, msg: "تم تعيين المسؤول بنجاح" });
     } catch (e) { res.json({ success: false, msg: "خطأ في النظام" }); }
 });
@@ -481,6 +533,13 @@ app.post("/api/superadmin/staff/remove", isSuperAdmin, async (req, res) => {
     const { discordId } = req.body;
     try {
         await Settings.updateOne({}, { $pull: { staffList: discordId } });
+        await logEvent({
+            action: "staff_removed",
+            discordId,
+            actorId: req.user.id, actorTag: req.user.username,
+            site: "إعدادات السوبر أدمين",
+            details: `تم طرد الآيدي ${discordId} من المسؤولين`
+        });
         res.json({ success: true, msg: "تم طرد المسؤول بنجاح" });
     } catch (e) { res.json({ success: false, msg: "خطأ في النظام" }); }
 });
@@ -520,6 +579,8 @@ app.put("/api/admin/bank-requests/:id/:action", isStaff, async (req, res) => {
             await ApprovalLog.create({
                 discordId: bankReq.discord,
                 discordTag: bankReq.discordTag,
+                actorId: req.user.id,
+                actorTag: req.user.username,
                 action: "bank_approved",
                 site: "الأحوال المدنية (موظف)",
                 accountNumber
@@ -531,6 +592,8 @@ app.put("/api/admin/bank-requests/:id/:action", isStaff, async (req, res) => {
             await ApprovalLog.create({
                 discordId: bankReq.discord,
                 discordTag: bankReq.discordTag,
+                actorId: req.user.id,
+                actorTag: req.user.username,
                 action: "bank_rejected",
                 site: "الأحوال المدنية (موظف)",
                 accountNumber: null
@@ -1154,33 +1217,54 @@ app.use(async (req, res) => {
             }
         }
 
-        // ── لوق القبول (سوبر أدمين) ────────────────────────────────────────
-        async function loadApprovalLog() {
+        // ── لوق الموقع الكامل (كبار المسؤولين فقط) ─────────────────────────
+        const LOG_META = {
+            id_submitted:        { icon: '📝', label: 'تقديم طلب هوية',      color: '#93c5fd', border: '#3b82f6' },
+            id_approved:         { icon: '✅', label: 'اعتماد هوية',          color: '#4ade80', border: '#22c55e' },
+            id_rejected:         { icon: '❌', label: 'رفض هوية',            color: '#fca5a5', border: '#ef4444' },
+            id_hidden:           { icon: '🗑️', label: 'أرشفة هوية',          color: '#fde047', border: '#eab308' },
+            id_unarchived:       { icon: '🔄', label: 'إلغاء أرشفة هوية',    color: '#c084fc', border: '#a855f7' },
+            bank_request_submitted: { icon: '🏦', label: 'طلب فتح حساب بنكي', color: '#93c5fd', border: '#3b82f6' },
+            bank_approved:       { icon: '✅', label: 'قبول حساب بنكي',      color: '#4ade80', border: '#22c55e' },
+            bank_rejected:       { icon: '❌', label: 'رفض حساب بنكي',       color: '#fca5a5', border: '#ef4444' },
+            staff_added:         { icon: '⭐', label: 'تعيين مسؤول جديد',     color: '#c084fc', border: '#a855f7' },
+            staff_removed:       { icon: '🚫', label: 'طرد مسؤول',           color: '#fca5a5', border: '#ef4444' },
+            settings_toggled:    { icon: '⚙️', label: 'تعديل إعدادات الموقع', color: '#c084fc', border: '#a855f7' }
+        };
+
+        let lastLogId = null;
+        async function loadApprovalLog(silent) {
             const res = await fetch('/api/superadmin/approval-log');
             const logs = await res.json();
             const container = document.getElementById('admin-log-data');
-            
+            if (!container) return;
+
             if(logs.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#b09ed4; padding:20px;">لا توجد سجلات قبول حتى الآن.</p>';
+                container.innerHTML = '<p style="text-align:center; color:#b09ed4; padding:20px;">لا توجد أي أحداث مسجلة حتى الآن.</p>';
                 return;
             }
 
-            container.innerHTML = logs.map(log => \`
-                <div class="log-item \${log.action === 'bank_approved' ? 'log-bank-approved' : 'log-bank-rejected'}">
+            // لو التحديث صامت (بولنق) وما فيه شي جديد، لا تعيد الرسم
+            if (silent && logs[0] && logs[0]._id === lastLogId) return;
+            if (logs[0]) lastLogId = logs[0]._id;
+
+            container.innerHTML = logs.map(log => {
+                const meta = LOG_META[log.action] || { icon: 'ℹ️', label: log.action, color: '#b09ed4', border: '#6b5a8a' };
+                return \`
+                <div class="log-item" style="border-color:\${meta.border}; flex-wrap:wrap;">
                     <div>
-                        <span style="color:\${log.action === 'bank_approved' ? '#4ade80' : '#fca5a5'}; font-weight:bold;">
-                            \${log.action === 'bank_approved' ? '✅ قبول حساب' : '❌ رفض حساب'}
-                        </span>
-                        <span style="color:#b09ed4; margin-right:10px;">من \${log.site}</span>
+                        <span style="color:\${meta.color}; font-weight:bold;">\${meta.icon} \${meta.label}</span>
+                        <span style="color:#6b5a8a; margin-right:10px; font-size:0.8rem;">\${log.site || ''}</span>
                     </div>
-                    <div style="text-align:left; color:#b09ed4;">
-                        <div>الآيدي: <b style="color:#c084fc;">\${log.discordId}</b></div>
-                        <div>\${log.discordTag}</div>
+                    <div style="text-align:left; color:#b09ed4; font-size:0.85rem;">
+                        \${log.discordId ? \`<div>المستخدم: <b style="color:#c084fc;">\${log.discordTag || ''}</b> (\${log.discordId})</div>\` : ''}
+                        \${log.actorTag ? \`<div>بواسطة: <b style="color:#e8d5ff;">\${log.actorTag}</b> (\${log.actorId})</div>\` : ''}
                         \${log.accountNumber ? \`<div style="color:#4ade80;">رقم الحساب: \${log.accountNumber}</div>\` : ''}
+                        \${log.details ? \`<div style="color:#93c5fd;">\${log.details}</div>\` : ''}
                         <div style="font-size:0.78rem; color:#6b5a8a;">\${new Date(log.createdAt).toLocaleString('ar-SA')}</div>
                     </div>
-                </div>
-            \`).join('');
+                </div>\`;
+            }).join('');
         }
 
         // ── إعدادات السوبر أدمين ───────────────────────────────────────────
@@ -1261,6 +1345,27 @@ app.use(async (req, res) => {
         }
 
         checkAuth();
+
+        // ── نظام التحديث المباشر (Live Update) ──────────────────────────────
+        // يحدّث تلقائياً كل فترة قصيرة حسب الصفحة/القسم المفتوح حالياً،
+        // بدون ما يحتاج المستخدم أو الإداري يعمل رفرش يدوي.
+        setInterval(() => {
+            const activePage = document.querySelector('.page.active');
+            if (activePage) {
+                if (activePage.id === 'page-ids') loadMyIds();
+                if (activePage.id === 'page-bank') loadBankRequests();
+            }
+
+            const adminModal = document.getElementById('adminModal');
+            if (adminModal && adminModal.style.display === 'block') {
+                const activeTabBtn = document.querySelector('.tab-btn.active');
+                if (!activeTabBtn) return;
+                if (activeTabBtn.id === 'tab-req') loadAdminRequests();
+                if (activeTabBtn.id === 'tab-bank') loadAdminBankRequests();
+                if (activeTabBtn.id === 'tab-arch') loadArchivedRequests();
+                if (activeTabBtn.id === 'tab-log') loadApprovalLog(true); // silent: ما يعيد الرسم إلا لو فيه جديد
+            }
+        }, 6000);
     </script>
 <footer style="text-align: center; padding: 1.5rem; margin-top: 2rem; border-top: 1px solid rgba(160,100,255,0.2); background: rgba(15,5,30,0.6); color: #b09ed4; font-size: 0.9rem;">
     <p>جميع الحقوق محفوظة © 2026 | <span style="color: #c084fc; font-weight: bold;">MOI - وزارة الداخلية</span></p>
