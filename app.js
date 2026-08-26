@@ -638,6 +638,10 @@ app.use(async (req, res) => {
             <div class="box">
                 <h1>⚙️ الموقع تحت الصيانة حالياً</h1>
                 <p style="color: #e8d5ff; margin-top:10px;">نعمل الآن على تحديث الأنظمة وتطوير الأحوال المدنية، يرجى العودة لاحقاً.</p>
+                ${req.isAuthenticated() ? '' : `
+                <div style="margin-top:20px;">
+                    <a href="/auth/discord" style="display:inline-block; background:#5865F2; color:#fff; text-decoration:none; padding:10px 22px; border-radius:10px; font-weight:700; font-family:'Tajawal',sans-serif;">تسجيل الدخول عبر ديسكورد</a>
+                </div>`}
             </div>
         </body>
         </html>`);
