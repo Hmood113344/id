@@ -240,8 +240,8 @@ app.post("/api/ids", checkMaintenance, async (req, res) => {
         if (!name || !age || !dob || !nationality || !gender)
             return res.json({ success: false, msg: "يجب ملء جميع الحقول" });
         const count = await Id.countDocuments({ discord: discordId, status: { $ne: "hidden" } });
-        if (count >= 2)
-            return res.json({ success: false, msg: "لقد وصلت للحد الأقصى المسموح به (هويتين فقط)" });
+        if (count >= 1)
+            return res.json({ success: false, msg: "لديك هوية واحدة مسجلة بالفعل، غير مسموح بتقديم أكثر من هوية" });
         let uniqueIds = generateUniqueNumbers();
         let isExist = await Id.findOne({ $or: [{ idNumber: uniqueIds.idNumber }, { shortId: uniqueIds.shortId }] });
         while (isExist) { 
