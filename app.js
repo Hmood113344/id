@@ -654,7 +654,7 @@ app.use(async (req, res) => {
             <meta charset="UTF-8"><title>صيانة ومجدولة</title>
             <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@700&display=swap" rel="stylesheet">
             <style>
-                body { background: #1a0a2e; color: #fca5a5; font-family: 'Tajawal', sans-serif; text-align: center; padding-top: 20vh; }
+                body { background: #0a1628; color: #fca5a5; font-family: 'Tajawal', sans-serif; text-align: center; padding-top: 20vh; }
                 .box { border: 2px solid #ef4444; background: rgba(239,68,68,0.1); padding: 30px; display:inline-block; border-radius:15px; }
                 .disclaimer-bar { position: fixed; top: 0; left: 0; width: 100%; z-index: 999999; background: #dc2626; color: #fff; text-align: center; font-weight: 900; font-size: 0.85rem; padding: 10px 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.5); font-family: 'Tajawal', sans-serif; }
                 @media (max-width: 640px) { .disclaimer-bar { font-size: 0.72rem; padding: 8px 6px; } }
@@ -664,7 +664,7 @@ app.use(async (req, res) => {
             <div class="disclaimer-bar">⚠️ تنبيه: هذا الموقع مخصص للمحاكاة واللعب فقط، ولا يمت للواقع بصلة.</div>
             <div class="box">
                 <h1>⚙️ الموقع تحت الصيانة حالياً</h1>
-                <p style="color: #e8d5ff; margin-top:10px;">نعمل الآن على تحديث الأنظمة وتطوير الأحوال المدنية، يرجى العودة لاحقاً.</p>
+                <p style="color: #e2e8f0; margin-top:10px;">نعمل الآن على تحديث الأنظمة وتطوير الأحوال المدنية، يرجى العودة لاحقاً.</p>
                 ${req.isAuthenticated() ? '' : `
                 <div style="margin-top:20px;">
                     <a href="/auth/discord" style="display:inline-block; background:#5865F2; color:#fff; text-decoration:none; padding:10px 22px; border-radius:10px; font-weight:700; font-family:'Tajawal',sans-serif;">تسجيل الدخول عبر ديسكورد</a>
@@ -683,28 +683,28 @@ app.use(async (req, res) => {
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;800;900&display=swap" rel="stylesheet">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { min-height: 100vh; background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 40%, #3d2060 70%, #4a2878 100%); font-family: 'Tajawal', sans-serif; color: #e8d5ff; direction: rtl; }
-        nav { background: rgba(15,5,30,0.9); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(160,100,255,0.3); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
-        .logo { font-size: 1.4rem; font-weight: 900; background: linear-gradient(90deg,#c084fc,#a855f7,#7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; }
+        body { min-height: 100vh; background: linear-gradient(135deg, #0a1628 0%, #0d1f3c 40%, #0a2744 70%, #0d3060 100%); font-family: 'Tajawal', sans-serif; color: #e2e8f0; direction: rtl; }
+        nav { background: rgba(5,15,30,0.95); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(59,130,246,0.3); padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
+        .logo { font-size: 1.4rem; font-weight: 900; background: linear-gradient(90deg,#60a5fa,#3b82f6,#1d4ed8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: 2px; }
         .nav-links { display: flex; gap: 0.5rem; list-style: none; }
-        .nav-links button { background: transparent; border: 1px solid transparent; color: #b09ed4; padding: 0.35rem 0.8rem; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: all 0.2s; }
-        .nav-links button.active, .nav-links button:hover { background: rgba(139,92,246,0.3); border-color: #a855f7; color: #c084fc; }
+        .nav-links button { background: transparent; border: 1px solid transparent; color: #94a3b8; padding: 0.35rem 0.8rem; border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 0.85rem; transition: all 0.2s; }
+        .nav-links button.active, .nav-links button:hover { background: rgba(59,130,246,0.2); border-color: #3b82f6; color: #60a5fa; }
         .login-btn { background: #5865F2; color: white; border: none; padding: 0.5rem 1rem; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: inherit; }
         .page { display: none; max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
         .page.active { display: block; }
-        .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(160,100,255,0.2); border-radius: 16px; padding: 1.5rem; backdrop-filter: blur(8px); margin-bottom: 1.2rem; }
-        h1 { color: #c084fc; margin-bottom: 1.2rem; font-size: 1.6rem; }
-        h2 { color: #c084fc; margin-bottom: 1rem; font-size: 1.2rem; border-bottom: 1px solid rgba(160,100,255,0.2); padding-bottom: 0.7rem; }
-        input, select { width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(160,100,255,0.3); border-radius: 8px; color: #e8d5ff; padding: 0.65rem 1rem; font-size: 0.9rem; font-family: inherit; outline: none; margin-bottom: 0.9rem; }
+        .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(59,130,246,0.2); border-radius: 16px; padding: 1.5rem; backdrop-filter: blur(8px); margin-bottom: 1.2rem; }
+        h1 { color: #60a5fa; margin-bottom: 1.2rem; font-size: 1.6rem; }
+        h2 { color: #60a5fa; margin-bottom: 1rem; font-size: 1.2rem; border-bottom: 1px solid rgba(59,130,246,0.2); padding-bottom: 0.7rem; }
+        input, select { width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(59,130,246,0.3); border-radius: 8px; color: #e2e8f0; padding: 0.65rem 1rem; font-size: 0.9rem; font-family: inherit; outline: none; margin-bottom: 0.9rem; }
         .btn { border: none; color: #fff; padding: 0.6rem 1.3rem; border-radius: 8px; cursor: pointer; font-family: inherit; font-weight: 700; font-size: 0.88rem; transition: opacity 0.2s; }
-        .btn-purple { background: linear-gradient(135deg,#7c3aed,#a855f7); }
+        .btn-purple { background: linear-gradient(135deg,#1d4ed8,#3b82f6); }
         .btn-full { width: 100%; padding: 0.75rem; margin-top: 0.5rem; }
         
-        .id-card { background: linear-gradient(135deg, rgba(45,27,78,0.8), rgba(15,5,30,0.9)); border: 2px solid #a855f7; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.4); position: relative; overflow: hidden; }
+        .id-card { background: linear-gradient(135deg, rgba(30,58,95,0.8), rgba(5,15,30,0.95)); border: 2px solid #3b82f6; border-radius: 15px; padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 8px 24px rgba(0,0,0,0.4); position: relative; overflow: hidden; }
         .id-card::before { content: 'MOI ID'; position: absolute; left: -10px; bottom: -10px; font-size: 4rem; font-weight: 900; color: rgba(255,255,255,0.03); z-index: 0; pointer-events: none; }
-        .id-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(168,85,247,0.4); padding-bottom: 8px; margin-bottom: 12px; }
+        .id-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(59,130,246,0.3); padding-bottom: 8px; margin-bottom: 12px; }
         .id-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; font-size: 0.95rem; position: relative; z-index: 1; }
-        .id-item { background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(168,85,247,0.1); }
+        .id-item { background: rgba(255,255,255,0.03); padding: 8px 12px; border-radius: 6px; border: 1px solid rgba(59,130,246,0.1); }
         
         .status-badge { padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
         .status-approved { background: rgba(34,197,94,0.2); color: #4ade80; border: 1px solid #22c55e; }
@@ -713,13 +713,13 @@ app.use(async (req, res) => {
 
         .admin-fab {
             position: fixed; bottom: 25px; right: 25px;
-            background: linear-gradient(135deg, #a855f7, #6d28d9);
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
             color: white; padding: 14px 24px; border-radius: 50px;
             font-weight: bold; font-family: inherit; cursor: pointer;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             display: none; z-index: 999; border: 2px solid rgba(255,255,255,0.2); transition: 0.3s;
         }
-        .admin-fab:hover { transform: scale(1.05); box-shadow: 0 6px 25px rgba(168,85,247,0.5); }
+        .admin-fab:hover { transform: scale(1.05); box-shadow: 0 6px 25px rgba(59,130,246,0.5); }
 
         .custom-modal {
             display: none; position: fixed; top: 0; left: 0;
@@ -727,17 +727,17 @@ app.use(async (req, res) => {
             z-index: 10000; backdrop-filter: blur(8px);
         }
         .modal-content {
-            max-width: 850px; margin: 40px auto; background: #15051e;
-            border: 2px solid #a855f7; border-radius: 15px; padding: 25px;
+            max-width: 850px; margin: 40px auto; background: #050f1e;
+            border: 2px solid #3b82f6; border-radius: 15px; padding: 25px;
             max-height: 85vh; overflow-y: auto; color: white;
         }
         .toggle-btn { padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: bold; border: none; margin-left: 10px; }
         .active-status { background: #22c55e; color: white; }
         .inactive-status { background: #ef4444; color: white; }
         
-        .tabs-container { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid rgba(168,85,247,0.3); padding-bottom: 10px; flex-wrap: wrap; }
-        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(168,85,247,0.3); color: #b09ed4; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-family: inherit; }
-        .tab-btn.active { background: #a855f7; color: white; border-color: #a855f7; }
+        .tabs-container { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid rgba(59,130,246,0.3); padding-bottom: 10px; flex-wrap: wrap; }
+        .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(59,130,246,0.3); color: #94a3b8; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-family: inherit; }
+        .tab-btn.active { background: #3b82f6; color: white; border-color: #3b82f6; }
 
         /* Responsive */
         @media (max-width: 640px) {
@@ -769,7 +769,7 @@ app.use(async (req, res) => {
         .bank-req-card.rejected { border-color: #ef4444; background: rgba(239,68,68,0.05); }
 
         /* لوق السوبر أدمين */
-        .log-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(168,85,247,0.2); border-radius: 8px; padding: 10px 15px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; }
+        .log-item { background: rgba(255,255,255,0.02); border: 1px solid rgba(59,130,246,0.2); border-radius: 8px; padding: 10px 15px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.88rem; }
         .log-bank-approved { border-color: #22c55e; }
         .log-bank-rejected { border-color: #ef4444; }
 
@@ -810,14 +810,14 @@ app.use(async (req, res) => {
 
     <div id="page-home" class="page active">
         <div style="text-align:center; margin-bottom:2rem;">
-            <h1 style="font-size:3rem; text-shadow: 0 0 15px #a855f7;">الأحوال المدنية</h1>
+            <h1 style="font-size:3rem; text-shadow: 0 0 15px #3b82f6;">الأحوال المدنية</h1>
             <p>النظام الرسمي لوزارة الداخلية لاستخراج وإدارة الهويات الذكية</p>
         </div>
         <div class="card">
             <h2>📋 التعليمات والشروط الهامة</h2>
             <p style="margin-top:8px;">1. يجب أن يكون الاسم واقعي ومطابق لشروط سيرفر وزارة الداخلية (MOI).</p>
             <p style="margin-top:8px;">2. يمنع منعاً باتاً انتحال شخصيات المشاهير أو الإداريين.</p>
-            <p style="margin-top:8px; color: #c084fc; font-weight: bold;">3. يسمح بتقديم واستخراج (هويه وحده فقط 1) بحد أقصى لكل مواطن.</p>
+            <p style="margin-top:8px; color: #60a5fa; font-weight: bold;">3. يسمح بتقديم واستخراج (هويه وحده فقط 1) بحد أقصى لكل مواطن.</p>
             <p style="margin-top:8px;">4. عند الموافقة، ستحصل هويتك تلقائياً على رقم وطني فريد (11 رقم) واختصار فريد (5 أرقام).</p>
         </div>
     </div>
@@ -829,7 +829,7 @@ app.use(async (req, res) => {
 
     <div id="page-apply" class="page">
         <h1>📝 تقديم طلب هوية جديدة</h1>
-        <p style="color:#b09ed4; margin-bottom:1rem;">يمكنك امتلاك هويه واحد فقط لكل مستخدم كحد أقصى بالنظام.</p>
+        <p style="color:#94a3b8; margin-bottom:1rem;">يمكنك امتلاك هويه واحد فقط لكل مستخدم كحد أقصى بالنظام.</p>
         <div id="apply-form-container" class="card">
             <div id="apply-msg"></div>
             <label>الاسم الكامل:</label>
@@ -869,7 +869,7 @@ app.use(async (req, res) => {
     <!-- صفحة طلبات البنك -->
     <div id="page-bank" class="page">
         <h1>🏦 طلبات فتح حساب — بنك وزارة الداخلية</h1>
-        <p style="color:#b09ed4; margin-bottom:1.5rem;">هنا تظهر طلبات فتح الحساب البنكي الواردة من بنك وزارة الداخلية. اقبل أو ارفض الطلب بنفسك.</p>
+        <p style="color:#94a3b8; margin-bottom:1.5rem;">هنا تظهر طلبات فتح الحساب البنكي الواردة من بنك وزارة الداخلية. اقبل أو ارفض الطلب بنفسك.</p>
         <div id="bank-requests-container">جاري التحميل...</div>
     </div>
 
@@ -877,8 +877,8 @@ app.use(async (req, res) => {
 
     <div id="adminModal" class="custom-modal">
         <div class="modal-content">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:2px solid #a855f7; padding-bottom:10px;">
-                <h2 id="admin-panel-title" style="color:#c084fc;">لوحة إدارة الهويات ⚙️</h2>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; border-bottom:2px solid #3b82f6; padding-bottom:10px;">
+                <h2 id="admin-panel-title" style="color:#60a5fa;">لوحة إدارة الهويات ⚙️</h2>
                 <button onclick="closeAdminModal()" style="background:none; border:none; color:white; font-size:24px; cursor:pointer;">✕</button>
             </div>
             
@@ -898,7 +898,7 @@ app.use(async (req, res) => {
             <!-- قسم طلبات البنك للموظفين -->
             <div id="admin-bank-section" style="display:none;">
                 <h3>🏦 طلبات فتح حساب بنك وزارة الداخلية المعلقة</h3>
-                <p style="color:#b09ed4; font-size:0.85rem; margin: 8px 0 16px;">الطلبات اللي لم يرد عليها المستخدم بعد — تقدر تقبل أو ترفض بدلاً عنه.</p>
+                <p style="color:#94a3b8; font-size:0.85rem; margin: 8px 0 16px;">الطلبات اللي لم يرد عليها المستخدم بعد — تقدر تقبل أو ترفض بدلاً عنه.</p>
                 <div id="admin-bank-data">جاري التحميل...</div>
             </div>
 
@@ -911,7 +911,7 @@ app.use(async (req, res) => {
             <!-- قسم اللوق الشامل -->
             <div id="admin-log-section" style="display:none;">
                 <h3>📋 لوق الموقع الشامل</h3>
-                <p style="color:#b09ed4; font-size:0.85rem; margin: 8px 0 16px;">سجل كامل بكل حدث يصير في الموقع: تقديم/قبول/رفض/أرشفة الهويات، طلبات البنك، تعيين وطرد المسؤولين، وتعديل الإعدادات.</p>
+                <p style="color:#94a3b8; font-size:0.85rem; margin: 8px 0 16px;">سجل كامل بكل حدث يصير في الموقع: تقديم/قبول/رفض/أرشفة الهويات، طلبات البنك، تعيين وطرد المسؤولين، وتعديل الإعدادات.</p>
                 <input id="log-search" placeholder="🔍 ابحث بالاسم، اليوزر، الآيدي، أو نوع الحدث..." oninput="filterLog()" style="margin-bottom:15px;" />
                 <div id="admin-log-data">جاري التحميل...</div>
             </div>
@@ -957,7 +957,7 @@ app.use(async (req, res) => {
                 currentUser = data.user;
                 currentUserRole = data.role;
                 document.getElementById('auth-section').innerHTML = \`
-                    <span style="margin-left:15px; font-weight:bold; color:#c084fc;">\${data.user.username} (\${getRoleName(data.role)})</span>
+                    <span style="margin-left:15px; font-weight:bold; color:#60a5fa;">\${data.user.username} (\${getRoleName(data.role)})</span>
                     <button class="btn" style="background:#dc2626;" onclick="location.href='/logout'">خروج</button>
                 \`;
                 if(currentUserRole === 'staff' || currentUserRole === 'super_admin') {
@@ -1027,19 +1027,19 @@ app.use(async (req, res) => {
             const r = await fetch('/api/ids/my');
             const data = await r.json();
             if(data.locked) return container.innerHTML = \`<p class="card" style="text-align:center; color:#ef4444;">⚠️ \${data.msg}</p>\`;
-            if(data.length === 0) return container.innerHTML = '<p class="card" style="text-align:center; color:#9880b8;">لا توجد هويات مسجلة باسمك حالياً.</p>';
+            if(data.length === 0) return container.innerHTML = '<p class="card" style="text-align:center; color:#64748b;">لا توجد هويات مسجلة باسمك حالياً.</p>';
             container.innerHTML = data.map(id => \`
                 <div class="id-card">
                     <div class="id-header">
-                        <span style="font-weight:900; font-size:1.1rem; color:#c084fc;">ID CARD — MOI</span>
+                        <span style="font-weight:900; font-size:1.1rem; color:#60a5fa;">ID CARD — MOI</span>
                         <span class="status-badge \${id.status === 'approved' ? 'status-approved' : (id.status === 'rejected' ? 'status-rejected' : 'status-pending')}">
                             \${id.status === 'approved' ? 'مقبولة ورسمية ✅' : (id.status === 'rejected' ? 'مرفوضة ❌' : 'قيد الانتظار ⏳')}
                         </span>
                     </div>
                     <div class="id-grid">
                         <div class="id-item"><b>الاسم الكامل:</b> \${id.name}</div>
-                        <div class="id-item"><b>رقم الهوية الموحد:</b> <span style="color:#c084fc; font-weight:bold;">\${id.idNumber || 'جاري التوليد بعد القبول'}</span></div>
-                        <div class="id-item"><b>رقم الاختصار:</b> <span style="color:#c084fc; font-weight:bold;">\${id.shortId || 'جاري التوليد'}</span></div>
+                        <div class="id-item"><b>رقم الهوية الموحد:</b> <span style="color:#60a5fa; font-weight:bold;">\${id.idNumber || 'جاري التوليد بعد القبول'}</span></div>
+                        <div class="id-item"><b>رقم الاختصار:</b> <span style="color:#60a5fa; font-weight:bold;">\${id.shortId || 'جاري التوليد'}</span></div>
                         <div class="id-item"><b>العمر:</b> \${id.age} سنة</div>
                         <div class="id-item"><b>تاريخ الميلاد:</b> \${id.dob}</div>
                         <div class="id-item"><b>الجنسية:</b> \${id.nationality}</div>
@@ -1057,13 +1057,13 @@ app.use(async (req, res) => {
         // ── صفحة طلبات البنك ──────────────────────────────────────────────
         async function loadBankRequests() {
             const container = document.getElementById('bank-requests-container');
-            container.innerHTML = '<p style="color:#b09ed4; text-align:center; padding:20px;">جاري التحميل...</p>';
+            container.innerHTML = '<p style="color:#94a3b8; text-align:center; padding:20px;">جاري التحميل...</p>';
 
             const r = await fetch('/api/bank/my-requests');
             const data = await r.json();
             
             if(data.length === 0) {
-                container.innerHTML = '<div class="card" style="text-align:center; color:#b09ed4;">لا توجد طلبات فتح حساب بنكي واردة حالياً.<br><small style="color:#6b5a8a;">عندما تسجل في بنك وزارة الداخلية ستظهر الطلبات هنا.</small></div>';
+                container.innerHTML = '<div class="card" style="text-align:center; color:#94a3b8;">لا توجد طلبات فتح حساب بنكي واردة حالياً.<br><small style="color:#64748b;">عندما تسجل في بنك وزارة الداخلية ستظهر الطلبات هنا.</small></div>';
                 return;
             }
 
@@ -1075,8 +1075,8 @@ app.use(async (req, res) => {
                             \${req.status === 'approved' ? 'مقبول ✅' : req.status === 'rejected' ? 'مرفوض ❌' : 'في الانتظار ⏳'}
                         </span>
                     </div>
-                    <p style="color:#b09ed4; font-size:0.9rem; margin-bottom:8px;">رقم الهوية المستخدم: <b style="color:#e8d5ff;">\${req.idNumber}</b></p>
-                    <p style="color:#b09ed4; font-size:0.85rem; margin-bottom:10px;">تاريخ الطلب: \${new Date(req.createdAt).toLocaleString('ar-SA')}</p>
+                    <p style="color:#94a3b8; font-size:0.9rem; margin-bottom:8px;">رقم الهوية المستخدم: <b style="color:#e2e8f0;">\${req.idNumber}</b></p>
+                    <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:10px;">تاريخ الطلب: \${new Date(req.createdAt).toLocaleString('ar-SA')}</p>
                     \${req.status === 'approved' ? \`
                         <div style="background:rgba(34,197,94,0.15); border:1px solid #22c55e; border-radius:8px; padding:10px; margin-bottom:10px;">
                             <p style="color:#4ade80; font-size:1rem; font-weight:bold;">✅ تم فتح الحساب البنكي بنجاح!</p>
@@ -1161,12 +1161,12 @@ app.use(async (req, res) => {
             const container = document.getElementById('admin-list-data');
             if(data.length === 0) return container.innerHTML = '<p style="text-align:center; padding:20px;">لا توجد أي طلبات هويات نشطة حالياً.</p>';
             container.innerHTML = data.map(id => \`
-                <div class="card" style="background:rgba(255,255,255,0.02); margin-bottom:15px; border-color:#4a2878;">
+                <div class="card" style="background:rgba(255,255,255,0.02); margin-bottom:15px; border-color:#0d3060;">
                     <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
                         <span><b>مقدم الطلب:</b> \${id.discordTag} (\${id.discord})</span>
                         <span class="status-badge \${id.status === 'approved' ? 'status-approved' : (id.status === 'rejected' ? 'status-rejected' : 'status-pending')}">\${id.status}</span>
                     </div>
-                    <p style="font-size:0.9rem; color:#b09ed4; margin-bottom:10px;">
+                    <p style="font-size:0.9rem; color:#94a3b8; margin-bottom:10px;">
                         الاسم: \${id.name} | العمر: \${id.age} | تاريخ الميلاد: \${id.dob} | الجنسية: \${id.nationality} | الجنس: \${id.gender}
                     </p>
                     \${id.idNumber ? \`<p style="font-size:0.9rem; color:#4ade80; margin-bottom:10px;">رقم الهوية: \${id.idNumber} | الاختصار: \${id.shortId}</p>\` : ''}
@@ -1191,14 +1191,14 @@ app.use(async (req, res) => {
 
         function renderArchive(data) {
             const container = document.getElementById('admin-archive-data');
-            if(data.length === 0) return container.innerHTML = '<p style="text-align:center; padding:20px; color:#b09ed4;">لا توجد نتائج.</p>';
+            if(data.length === 0) return container.innerHTML = '<p style="text-align:center; padding:20px; color:#94a3b8;">لا توجد نتائج.</p>';
             container.innerHTML = data.map(id => \`
                 <div class="card" style="background:rgba(239,68,68,0.02); margin-bottom:15px; border-color:#ef4444;">
                     <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
                         <span><b>مقدم الطلب (مؤرشفة):</b> \${id.discordTag} (\${id.discord})</span>
                         <span class="status-badge" style="background:rgba(239,68,68,0.2); color:#fca5a5;">مخفية 🗑️</span>
                     </div>
-                    <p style="font-size:0.9rem; color:#b09ed4; margin-bottom:10px;">
+                    <p style="font-size:0.9rem; color:#94a3b8; margin-bottom:10px;">
                         الاسم: \${id.name} | العمر: \${id.age} | الجنسية: \${id.nationality} | الجنس: \${id.gender}
                         \${id.idNumber ? \` | رقم الهوية: \${id.idNumber} | الاختصار: \${id.shortId}\` : ''}
                     </p>
@@ -1250,7 +1250,7 @@ app.use(async (req, res) => {
         // ── طلبات البنك في لوحة الإدارة ───────────────────────────────────
         async function loadAdminBankRequests() {
             const container = document.getElementById('admin-bank-data');
-            container.innerHTML = '<p style="text-align:center; color:#b09ed4; padding:20px;">جاري التحميل...</p>';
+            container.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:20px;">جاري التحميل...</p>';
             try {
                 const res = await fetch('/api/admin/bank-requests');
                 if (!res.ok) {
@@ -1259,7 +1259,7 @@ app.use(async (req, res) => {
                 }
                 const data = await res.json();
                 if(data.length === 0) {
-                    container.innerHTML = '<p style="text-align:center; padding:20px; color:#b09ed4;">لا توجد طلبات بنك معلقة حالياً.</p>';
+                    container.innerHTML = '<p style="text-align:center; padding:20px; color:#94a3b8;">لا توجد طلبات بنك معلقة حالياً.</p>';
                     return;
                 }
                 container.innerHTML = data.map(req => \`
@@ -1268,7 +1268,7 @@ app.use(async (req, res) => {
                             <span style="font-weight:bold; color:#93c5fd;">🏦 \${req.discordTag}</span>
                             <span style="color:#64748b; font-size:0.8rem;">\${req.discord}</span>
                         </div>
-                        <p style="color:#b09ed4; font-size:0.85rem; margin-bottom:4px;">رقم الهوية: <b style="color:#e8d5ff;">\${req.idNumber}</b></p>
+                        <p style="color:#94a3b8; font-size:0.85rem; margin-bottom:4px;">رقم الهوية: <b style="color:#e2e8f0;">\${req.idNumber}</b></p>
                         <p style="color:#64748b; font-size:0.8rem; margin-bottom:12px;">تاريخ الطلب: \${new Date(req.createdAt).toLocaleString('ar-SA')}</p>
                         <div style="display:flex; gap:10px;">
                             <button class="btn" style="background:#22c55e; flex:1;" onclick="actionAdminBankReq('\${req._id}', 'approve')">✅ قبول وفتح الحساب</button>
@@ -1302,14 +1302,14 @@ app.use(async (req, res) => {
             id_approved:         { icon: '✅', label: 'اعتماد هوية',          color: '#4ade80', border: '#22c55e' },
             id_rejected:         { icon: '❌', label: 'رفض هوية',            color: '#fca5a5', border: '#ef4444' },
             id_hidden:           { icon: '🗑️', label: 'أرشفة هوية',          color: '#fde047', border: '#eab308' },
-            id_unarchived:       { icon: '🔄', label: 'إلغاء أرشفة هوية',    color: '#c084fc', border: '#a855f7' },
+            id_unarchived:       { icon: '🔄', label: 'إلغاء أرشفة هوية',    color: '#60a5fa', border: '#3b82f6' },
             id_deleted:          { icon: '🗑️', label: 'حذف هوية نهائياً',    color: '#fca5a5', border: '#7f1d1d' },
             bank_request_submitted: { icon: '🏦', label: 'طلب فتح حساب بنكي', color: '#93c5fd', border: '#3b82f6' },
             bank_approved:       { icon: '✅', label: 'قبول حساب بنكي',      color: '#4ade80', border: '#22c55e' },
             bank_rejected:       { icon: '❌', label: 'رفض حساب بنكي',       color: '#fca5a5', border: '#ef4444' },
-            staff_added:         { icon: '⭐', label: 'تعيين مسؤول جديد',     color: '#c084fc', border: '#a855f7' },
+            staff_added:         { icon: '⭐', label: 'تعيين مسؤول جديد',     color: '#60a5fa', border: '#3b82f6' },
             staff_removed:       { icon: '🚫', label: 'طرد مسؤول',           color: '#fca5a5', border: '#ef4444' },
-            settings_toggled:    { icon: '⚙️', label: 'تعديل إعدادات الموقع', color: '#c084fc', border: '#a855f7' }
+            settings_toggled:    { icon: '⚙️', label: 'تعديل إعدادات الموقع', color: '#60a5fa', border: '#3b82f6' }
         };
 
         let lastLogId = null;
@@ -1326,7 +1326,7 @@ app.use(async (req, res) => {
 
             if (logs.length === 0) {
                 allLogsData = [];
-                container.innerHTML = '<p style="text-align:center; color:#b09ed4; padding:20px;">لا توجد أي أحداث مسجلة حتى الآن.</p>';
+                container.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:20px;">لا توجد أي أحداث مسجلة حتى الآن.</p>';
                 return;
             }
 
@@ -1353,24 +1353,24 @@ app.use(async (req, res) => {
             const container = document.getElementById('admin-log-data');
             if (!container) return;
             if(logs.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#b09ed4; padding:20px;">لا توجد نتائج مطابقة.</p>';
+                container.innerHTML = '<p style="text-align:center; color:#94a3b8; padding:20px;">لا توجد نتائج مطابقة.</p>';
                 return;
             }
 
             container.innerHTML = logs.map(log => {
-                const meta = LOG_META[log.action] || { icon: 'ℹ️', label: log.action, color: '#b09ed4', border: '#6b5a8a' };
+                const meta = LOG_META[log.action] || { icon: 'ℹ️', label: log.action, color: '#94a3b8', border: '#64748b' };
                 return \`
                 <div class="log-item" style="border-color:\${meta.border}; flex-wrap:wrap;">
                     <div>
                         <span style="color:\${meta.color}; font-weight:bold;">\${meta.icon} \${meta.label}</span>
-                        <span style="color:#6b5a8a; margin-right:10px; font-size:0.8rem;">\${log.site || ''}</span>
+                        <span style="color:#64748b; margin-right:10px; font-size:0.8rem;">\${log.site || ''}</span>
                     </div>
-                    <div style="text-align:left; color:#b09ed4; font-size:0.85rem;">
-                        \${log.discordId ? \`<div>المستخدم: <b style="color:#c084fc;">\${log.discordTag || ''}</b> (\${log.discordId})</div>\` : ''}
-                        \${log.actorTag ? \`<div>بواسطة: <b style="color:#e8d5ff;">\${log.actorTag}</b> (\${log.actorId})</div>\` : ''}
+                    <div style="text-align:left; color:#94a3b8; font-size:0.85rem;">
+                        \${log.discordId ? \`<div>المستخدم: <b style="color:#60a5fa;">\${log.discordTag || ''}</b> (\${log.discordId})</div>\` : ''}
+                        \${log.actorTag ? \`<div>بواسطة: <b style="color:#e2e8f0;">\${log.actorTag}</b> (\${log.actorId})</div>\` : ''}
                         \${log.accountNumber ? \`<div style="color:#4ade80;">رقم الحساب: \${log.accountNumber}</div>\` : ''}
                         \${log.details ? \`<div style="color:#93c5fd;">\${log.details}</div>\` : ''}
-                        <div style="font-size:0.78rem; color:#6b5a8a;">\${new Date(log.createdAt).toLocaleString('ar-SA')}</div>
+                        <div style="font-size:0.78rem; color:#64748b;">\${new Date(log.createdAt).toLocaleString('ar-SA')}</div>
                     </div>
                 </div>\`;
             }).join('');
@@ -1476,8 +1476,8 @@ app.use(async (req, res) => {
             }
         }, 6000);
     </script>
-<footer style="text-align: center; padding: 1.5rem; margin-top: 2rem; border-top: 1px solid rgba(160,100,255,0.2); background: rgba(15,5,30,0.6); color: #b09ed4; font-size: 0.9rem;">
-    <p>جميع الحقوق محفوظة © 2026 | <span style="color: #c084fc; font-weight: bold;">MOI - وزارة الداخلية</span></p>
+<footer style="text-align: center; padding: 1.5rem; margin-top: 2rem; border-top: 1px solid rgba(59,130,246,0.2); background: rgba(5,15,30,0.6); color: #94a3b8; font-size: 0.9rem;">
+    <p>جميع الحقوق محفوظة © 2026 | <span style="color: #60a5fa; font-weight: bold;">MOI - وزارة الداخلية</span></p>
 </footer>
 </body>
 </html>`);
