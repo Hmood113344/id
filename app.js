@@ -461,6 +461,27 @@ app.put("/api/admin/ids/:id/:action", isStaff, async (req, res) => {
     } catch (e) { res.json({ success: false }); }
 });
 
+// ── حذف الهوية نهائياً من الأرشيف (كبار المسؤولين فقط) ────────────────────
+app.delete("/api/admin/ids/:id/delete", isSuperAdmin, async (req, res) => {
+    const { id } = req.params;
+    try {
+        const targetId = await Id.findById(id);
+        if (!targetId) return res.status(404).json({ success: false, msg: "الهوية غير موجودة" });
+        if (targetId.status !== 'hidden') {
+            return res.status(400).json({ success: false, msg: "لا يمكن حذف هوية إلا وهي في الأرشيف" });
+        }
+        await Id.findByIdAndDelete(id);
+        await logEvent({
+            action: "id_deleted",
+            discordId: targetId.discord, discordTag: targetId.discordTag,
+            actorId: req.user.id, actorTag: req.user.username,
+            site: "لوحة إدارة الأحوال المدنية",
+            details: `تم حذف الهوية نهائياً (${targetId.name})`
+        });
+        res.json({ success: true });
+    } catch (e) { res.json({ success: false, msg: "خطأ في النظام" }); }
+});
+
 // ── API تصفير المستخدم من البنك ──────────────────────────────────────────
 
 app.post("/api/bank/reset-user/:discordId", async (req, res) => {
@@ -883,6 +904,7 @@ app.use(async (req, res) => {
 
             <div id="admin-archive-section" style="display:none;">
                 <h3>🗄️ الهويات المؤرشفة والمخفية</h3><br>
+                <input id="archive-search" placeholder="🔍 ابحث بالاسم، اليوزر، الآيدي، رقم الهوية أو الاختصار..." oninput="filterArchive()" style="margin-bottom:15px;" />
                 <div id="admin-archive-data">جاري تحميل الأرشيف...</div>
             </div>
 
@@ -890,6 +912,7 @@ app.use(async (req, res) => {
             <div id="admin-log-section" style="display:none;">
                 <h3>📋 لوق الموقع الشامل</h3>
                 <p style="color:#b09ed4; font-size:0.85rem; margin: 8px 0 16px;">سجل كامل بكل حدث يصير في الموقع: تقديم/قبول/رفض/أرشفة الهويات، طلبات البنك، تعيين وطرد المسؤولين، وتعديل الإعدادات.</p>
+                <input id="log-search" placeholder="🔍 ابحث بالاسم، اليوزر، الآيدي، أو نوع الحدث..." oninput="filterLog()" style="margin-bottom:15px;" />
                 <div id="admin-log-data">جاري التحميل...</div>
             </div>
 
@@ -1158,11 +1181,17 @@ app.use(async (req, res) => {
             \`).join('');
         }
 
+        let allArchivedData = [];
+
         async function loadArchivedRequests() {
             const res = await fetch('/api/admin/ids/archived');
-            const data = await res.json();
+            allArchivedData = await res.json();
+            renderArchive(allArchivedData);
+        }
+
+        function renderArchive(data) {
             const container = document.getElementById('admin-archive-data');
-            if(data.length === 0) return container.innerHTML = '<p style="text-align:center; padding:20px; color:#b09ed4;">الأرشيف فارغ.</p>';
+            if(data.length === 0) return container.innerHTML = '<p style="text-align:center; padding:20px; color:#b09ed4;">لا توجد نتائج.</p>';
             container.innerHTML = data.map(id => \`
                 <div class="card" style="background:rgba(239,68,68,0.02); margin-bottom:15px; border-color:#ef4444;">
                     <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
@@ -1171,13 +1200,37 @@ app.use(async (req, res) => {
                     </div>
                     <p style="font-size:0.9rem; color:#b09ed4; margin-bottom:10px;">
                         الاسم: \${id.name} | العمر: \${id.age} | الجنسية: \${id.nationality} | الجنس: \${id.gender}
+                        \${id.idNumber ? \` | رقم الهوية: \${id.idNumber} | الاختصار: \${id.shortId}\` : ''}
                     </p>
                     <div style="display:flex; gap:10px;">
                         <button class="btn btn-purple" style="padding:5px 12px;" onclick="actionId('\${id._id}', 'unarchive')">🔄 إلغاء الأرشيف</button>
                         <button class="btn" style="background:#22c55e; padding:5px 12px;" onclick="actionId('\${id._id}', 'approve')">✅ قبول مباشر</button>
+                        <button class="btn" style="background:#7f1d1d; padding:5px 12px;" onclick="deleteId('\${id._id}')">🗑️ حذف نهائي</button>
                     </div>
                 </div>
             \`).join('');
+        }
+
+        function filterArchive() {
+            const q = document.getElementById('archive-search').value.trim().toLowerCase();
+            if(!q) return renderArchive(allArchivedData);
+            const filtered = allArchivedData.filter(id => {
+                return [id.name, id.discordTag, id.discord, id.idNumber, id.shortId, id.nationality, id.gender]
+                    .some(v => (v || '').toString().toLowerCase().includes(q));
+            });
+            renderArchive(filtered);
+        }
+
+        async function deleteId(id) {
+            if(!confirm("متأكد إنك تبي تحذف هذي الهوية نهائياً؟ العملية ما ترجع فيها.")) return;
+            const res = await fetch(\`/api/admin/ids/\${id}/delete\`, { method: 'DELETE' });
+            const data = await res.json();
+            if(data.success) {
+                alert("تم حذف الهوية نهائياً.");
+                loadArchivedRequests();
+            } else {
+                alert(data.msg || "فشلت عملية الحذف");
+            }
         }
 
         async function actionId(id, action) {
@@ -1250,6 +1303,7 @@ app.use(async (req, res) => {
             id_rejected:         { icon: '❌', label: 'رفض هوية',            color: '#fca5a5', border: '#ef4444' },
             id_hidden:           { icon: '🗑️', label: 'أرشفة هوية',          color: '#fde047', border: '#eab308' },
             id_unarchived:       { icon: '🔄', label: 'إلغاء أرشفة هوية',    color: '#c084fc', border: '#a855f7' },
+            id_deleted:          { icon: '🗑️', label: 'حذف هوية نهائياً',    color: '#fca5a5', border: '#7f1d1d' },
             bank_request_submitted: { icon: '🏦', label: 'طلب فتح حساب بنكي', color: '#93c5fd', border: '#3b82f6' },
             bank_approved:       { icon: '✅', label: 'قبول حساب بنكي',      color: '#4ade80', border: '#22c55e' },
             bank_rejected:       { icon: '❌', label: 'رفض حساب بنكي',       color: '#fca5a5', border: '#ef4444' },
@@ -1259,20 +1313,49 @@ app.use(async (req, res) => {
         };
 
         let lastLogId = null;
+        let allLogsData = [];
         async function loadApprovalLog(silent) {
             const res = await fetch('/api/superadmin/approval-log');
             const logs = await res.json();
             const container = document.getElementById('admin-log-data');
             if (!container) return;
 
-            if(logs.length === 0) {
+            // لو التحديث صامت (بولنق) وما فيه شي جديد، لا تعيد الرسم
+            if (silent && logs[0] && logs[0]._id === lastLogId) return;
+            if (logs[0]) lastLogId = logs[0]._id;
+
+            if (logs.length === 0) {
+                allLogsData = [];
                 container.innerHTML = '<p style="text-align:center; color:#b09ed4; padding:20px;">لا توجد أي أحداث مسجلة حتى الآن.</p>';
                 return;
             }
 
-            // لو التحديث صامت (بولنق) وما فيه شي جديد، لا تعيد الرسم
-            if (silent && logs[0] && logs[0]._id === lastLogId) return;
-            if (logs[0]) lastLogId = logs[0]._id;
+            allLogsData = logs;
+            const q = (document.getElementById('log-search') || {}).value || '';
+            renderLog(q.trim() ? filterLogsData(q) : logs);
+        }
+
+        function filterLogsData(q) {
+            q = q.trim().toLowerCase();
+            return allLogsData.filter(log => {
+                const meta = LOG_META[log.action] || { label: log.action };
+                return [log.discordId, log.discordTag, log.actorId, log.actorTag, log.details, log.action, meta.label, log.accountNumber]
+                    .some(v => (v || '').toString().toLowerCase().includes(q));
+            });
+        }
+
+        function filterLog() {
+            const q = document.getElementById('log-search').value;
+            renderLog(q.trim() ? filterLogsData(q) : allLogsData);
+        }
+
+        function renderLog(logs) {
+            const container = document.getElementById('admin-log-data');
+            if (!container) return;
+            if(logs.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#b09ed4; padding:20px;">لا توجد نتائج مطابقة.</p>';
+                return;
+            }
 
             container.innerHTML = logs.map(log => {
                 const meta = LOG_META[log.action] || { icon: 'ℹ️', label: log.action, color: '#b09ed4', border: '#6b5a8a' };
