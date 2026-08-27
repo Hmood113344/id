@@ -814,9 +814,20 @@ app.use(async (req, res) => {
             <label>الجنسية:</label>
             <select id="f-nat">
                 <option value="">اختر الجنسية...</option>
-                <option>ساندي شور</option>
-                <option>بليتو</option>
-                <option>لوس سانتوس</option>
+                <option>🇸🇦 السعودية</option>
+                <option>🇦🇪 الإمارات</option>
+                <option>🇰🇼 الكويت</option>
+                <option>🇶🇦 قطر</option>
+                <option>🇧🇭 البحرين</option>
+                <option>🇴🇲 عُمان</option>
+                <option>🇪🇬 مصر</option>
+                <option>🇯🇴 الأردن</option>
+                <option>🇱🇧 لبنان</option>
+                <option>🇮🇶 العراق</option>
+                <option>🇲🇦 المغرب</option>
+                <option>🇾🇪 اليمن</option>
+                <option>🇩🇿 الجزائر</option>
+                <option>🇹🇳 تونس</option>
             </select>
             <label>الجنس:</label>
             <select id="f-gender">
