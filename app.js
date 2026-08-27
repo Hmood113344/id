@@ -407,7 +407,7 @@ app.get("/api/admin/ids", isStaff, async (req, res) => {
     } catch (e) { res.json([]); }
 });
 
-app.get("/api/admin/ids/archived", isStaff, async (req, res) => {
+app.get("/api/admin/ids/archived", isSuperAdmin, async (req, res) => {
     try {
         const ids = await Id.find({ status: "hidden" }).sort({ createdAt: -1 });
         res.json(ids);
@@ -416,6 +416,12 @@ app.get("/api/admin/ids/archived", isStaff, async (req, res) => {
 
 app.put("/api/admin/ids/:id/:action", isStaff, async (req, res) => {
     const { id, action } = req.params;
+    if ((action === 'hide' || action === 'unarchive')) {
+        const role = await getRole(req.user.id);
+        if (role !== 'super_admin') {
+            return res.status(403).json({ success: false, msg: "الأرشفة صلاحية كبار المسؤولين فقط" });
+        }
+    }
     let update = {};
     if (action === 'approve') update = { status: "approved", rejectedAt: null };
     if (action === 'reject') update = { status: "rejected", rejectedAt: new Date() };
@@ -802,7 +808,7 @@ app.use(async (req, res) => {
 
     <div id="page-apply" class="page">
         <h1>📝 تقديم طلب هوية جديدة</h1>
-        <p style="color:#b09ed4; margin-bottom:1rem;">يمكنك امتلاك هويه واحده فقط كحد أقصى بالنظام.</p>
+        <p style="color:#b09ed4; margin-bottom:1rem;">يمكنك امتلاك هويتين كحد أقصى بالنظام.</p>
         <div id="apply-form-container" class="card">
             <div id="apply-msg"></div>
             <label>الاسم الكامل:</label>
@@ -858,7 +864,7 @@ app.use(async (req, res) => {
             <div class="tabs-container">
                 <button id="tab-req" class="tab-btn active" onclick="switchMainTab('requests')">📥 طلبات الهوية</button>
                 <button id="tab-bank" class="tab-btn" style="border-color:#3b82f6;" onclick="switchMainTab('bank')">🏦 طلبات البنك</button>
-                <button id="tab-arch" class="tab-btn" onclick="switchMainTab('archive')">🗄️ الأرشيف والمخفية</button>
+                <button id="tab-arch" class="tab-btn" style="display:none; border-color:#ef4444;" onclick="switchMainTab('archive')">🗄️ الأرشيف والمخفية</button>
                 <button id="tab-log" class="tab-btn" style="display:none; border-color:#3b82f6;" onclick="switchMainTab('log')">📋 اللوق الشامل</button>
                 <button id="tab-ctrl" class="tab-btn" style="display:none; border-color:#ef4444;" onclick="switchMainTab('controls')">👑 تحكم كبار المسؤولين</button>
             </div>
@@ -936,6 +942,7 @@ app.use(async (req, res) => {
                     if(currentUserRole === 'super_admin') {
                         document.getElementById('tab-ctrl').style.display = 'block';
                         document.getElementById('tab-log').style.display = 'block';
+                        document.getElementById('tab-arch').style.display = 'block';
                         document.getElementById('admin-panel-title').innerText = "لوحة تحكم كبار المسؤولين 👑";
                     }
                 }
@@ -1016,6 +1023,10 @@ app.use(async (req, res) => {
                         <div class="id-item"><b>الجنس:</b> \${id.gender}</div>
                         <div class="id-item"><b>حساب الديسكورد:</b> \${id.discordTag}</div>
                     </div>
+                    \${id.status === 'rejected' ? \`
+                    <div style="margin-top:12px; padding:10px 14px; border-radius:10px; background:rgba(239,68,68,0.1); border:1px solid #ef4444; color:#fca5a5; font-size:0.9rem;">
+                        ⚠️ تم رفض هذه الهوية. للتواصل بخصوص إخفاء الهوية وإعادة التقديم من جديد، يرجى التواصل مع الدعم الفني للموقع عبر ديسكورد.
+                    </div>\` : ''}
                 </div>
             \`).join('');
         }
@@ -1141,7 +1152,7 @@ app.use(async (req, res) => {
                             <button class="btn" style="background:#22c55e; padding:5px 12px;" onclick="actionId('\${id._id}', 'approve')">✅ قبول واعتماد</button>
                             <button class="btn" style="background:#ef4444; padding:5px 12px;" onclick="actionId('\${id._id}', 'reject')">❌ رفض الطلب</button>
                         \` : ''}
-                        <button class="btn" style="background:#eab308; padding:5px 12px; color:black;" onclick="actionId('\${id._id}', 'hide')">🗑️ أرشفة وإخفاء</button>
+                        \${currentUserRole === 'super_admin' ? \`<button class="btn" style="background:#eab308; padding:5px 12px; color:black;" onclick="actionId('\${id._id}', 'hide')">🗑️ أرشفة وإخفاء</button>\` : ''}
                     </div>
                 </div>
             \`).join('');
