@@ -533,7 +533,7 @@ app.post("/api/superadmin/settings/toggle", isSuperAdmin, async (req, res) => {
         await logEvent({
             action: "settings_toggled",
             actorId: req.user.id, actorTag: req.user.username,
-            site: "إعدادات السوبر أدمين",
+            site: "إعدادات كبار السمؤولين",
             details: `صيانة: ${isMaintenance ? "مفعلة" : "متوقفة"} | قفل التقديم: ${isApplyLocked ? "مفعل" : "متوقف"} | قفل صفحة الهويات: ${isIdsPageLocked ? "مفعل" : "متوقف"}`
         });
         res.json({ success: true });
@@ -549,7 +549,7 @@ app.post("/api/superadmin/staff/add", isSuperAdmin, async (req, res) => {
             action: "staff_added",
             discordId,
             actorId: req.user.id, actorTag: req.user.username,
-            site: "إعدادات السوبر أدمين",
+            site: "إعدادات كبار السمؤولين",
             details: `تم تعيين الآيدي ${discordId} كمسؤول`
         });
         res.json({ success: true, msg: "تم تعيين المسؤول بنجاح" });
@@ -564,7 +564,7 @@ app.post("/api/superadmin/staff/remove", isSuperAdmin, async (req, res) => {
             action: "staff_removed",
             discordId,
             actorId: req.user.id, actorTag: req.user.username,
-            site: "إعدادات السوبر أدمين",
+            site: "إعدادات كبار المسؤولين",
             details: `تم طرد الآيدي ${discordId} من المسؤولين`
         });
         res.json({ success: true, msg: "تم طرد المسؤول بنجاح" });
