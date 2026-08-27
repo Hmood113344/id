@@ -802,7 +802,7 @@ app.use(async (req, res) => {
 
     <div id="page-apply" class="page">
         <h1>📝 تقديم طلب هوية جديدة</h1>
-        <p style="color:#b09ed4; margin-bottom:1rem;">يمكنك امتلاك هويتين كحد أقصى بالنظام.</p>
+        <p style="color:#b09ed4; margin-bottom:1rem;">يمكنك امتلاك هويه واحده فقط كحد أقصى بالنظام.</p>
         <div id="apply-form-container" class="card">
             <div id="apply-msg"></div>
             <label>الاسم الكامل:</label>
