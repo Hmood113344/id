@@ -17,7 +17,7 @@ const DISCORD_CALLBACK_URL = 'https://id-1f0p.onrender.com/auth/discord/callback
 const SUPER_ADMIN_IDS = ['1003511814140743825', '1231269832201207808', '1458502584481484952']; 
 
 // ── MongoDB والموديلات ──────────────────────────────────────────────────
-mongoose.connect("mongodb+srv://hmooduu6_db_user:0ks7Ktqh5IIteciW@cluster0.6bk7qm9.mongodb.net/?appName=Cluster0")
+mongoose.connect("mongodb+srv://Flashidbank:1598@cluster0.c40vzpy.mongodb.net/?appName=Cluster0")
 .then(() => {
     console.log("✅ MongoDB connected");
     initSettings();
