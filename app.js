@@ -14,7 +14,7 @@ const DISCORD_CLIENT_SECRET = 'oP2ABG5BXvQL3xyUS7Tkg3CPgD43GJk6';
 const DISCORD_CALLBACK_URL = 'https://id-1f0p.onrender.com/auth/discord/callback';
 
 // قائمة كبار المسؤولين (أصحاب الصلاحيات الكاملة)
-const SUPER_ADMIN_IDS = ['1003511814140743825', '1231269832201207808', '1458502584481484952']; 
+const SUPER_ADMIN_IDS = ['1003511814140743825', '1231269832201207808', '1458502584481484952', "1470029805507317844"]; 
 
 // ── MongoDB والموديلات ──────────────────────────────────────────────────
 mongoose.connect("mongodb+srv://Flashidbank:1598@cluster0.c40vzpy.mongodb.net/?appName=Cluster0")
